@@ -17,4 +17,14 @@
   .stats__table-row {
     @apply p-4 border-t border-gray-200;
   }
+  .pagination {
+    @apply flex space-x-2;
+    li.active {
+      @apply font-bold bg-gray-200;
+    }
+    li {
+      @apply px-3 py-2 rounded bg-gray-100;
+    }
+
+  }
 }

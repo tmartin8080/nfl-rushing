@@ -1,4 +1,6 @@
-<h1 class="page__title">Rushing Statistics</h1>
+<h1 class="page__title">
+  <%= live_patch "Rushing Statistics", to: Routes.page_path(@socket, :index) %>
+</h1>
 
 <section class="stats">
   <h5 class="text-lg text-bold">Filter by Player</h5>
@@ -17,8 +19,13 @@
                 <%= live_patch to: Routes.page_path(
                     @socket,
                     :index,
-                    [term: @params["term"], sort: [field: heading, direction: @target_direction]])
-                  do %>
+                    [
+                      page: @params["page"],
+                      term: @params["term"],
+                      sort: [field: heading,
+                      direction: @target_direction]
+                    ]
+                  ), class: "text-blue-500" do %>
                   <span><%= heading %></span>
                 <% end %>
                 <%= if @params["sort"]["field"] == heading do %>
@@ -62,4 +69,7 @@
       <% end %>
     </tbody>
   </table>
+  <div class="py-5 px-10 flex flex-row-reverse border-t border-gray-500">
+    <%= pagination_links @data %>
+  </div>
 </section>

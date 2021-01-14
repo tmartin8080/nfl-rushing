@@ -23,7 +23,6 @@ defmodule RushingWeb.PageLive do
     {:ok,
      socket
      |> assign(:sortable, @sortable)
-     |> assign(:params, @default_params)
      |> assign(:headings, Data.headings_list())}
   end
 

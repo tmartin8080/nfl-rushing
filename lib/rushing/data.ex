@@ -25,6 +25,7 @@ defmodule Rushing.Data do
     "FUM"
   ]
   @default_sort_direction "desc"
+  @default_page_size 15
 
   defguard is_search_and_sort(term, field)
            when is_binary(term) and term != "" and is_binary(field) and field != ""
@@ -36,13 +37,18 @@ defmodule Rushing.Data do
   Main data handling function.
   """
   @spec load_data(map()) :: list()
+
   def load_data(params) do
+    config = maybe_put_default_config(params)
+
     @path
     |> read_file!()
     |> Jason.decode()
     |> case do
       {:ok, data} ->
-        apply_filters(data, params)
+        data
+        |> apply_filters(params)
+        |> Scrivener.paginate(config)
 
       {:error, msg} ->
         raise "Error reading file: #{msg}"
@@ -98,5 +104,13 @@ defmodule Rushing.Data do
       {:ok, str} -> str
       {:error, _} -> raise "File not found: #{path}"
     end
+  end
+
+  defp maybe_put_default_config(%{"page" => _page_number} = params) do
+    Map.put(params, "page_size", @default_page_size)
+  end
+
+  defp maybe_put_default_config(_params) do
+    %Scrivener.Config{page_number: 1, page_size: @default_page_size}
   end
 end
