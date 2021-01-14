@@ -1,6 +1,7 @@
 defmodule Rushing.Stats.SortFields do
   @moduledoc """
-  Cleans up field values for sorting etc.
+  Cleans field values for sorting.
+  Each column is handled differently.
   """
 
   @doc """

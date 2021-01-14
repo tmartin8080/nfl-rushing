@@ -16,6 +16,7 @@ defmodule RushingWeb.Router do
 
   scope "/", RushingWeb do
     pipe_through :browser
+    post "/exports", ExportsController, :create
 
     live "/", PageLive, :index
   end

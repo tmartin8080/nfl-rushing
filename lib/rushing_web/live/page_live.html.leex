@@ -5,9 +5,15 @@
 <section class="stats">
   <h5 class="text-lg text-bold">Filter by Player</h5>
 
-  <form class="mb-5" phx-change="search">
-    <input name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
-  </form>
+  <div class="flex justify-between	">
+    <form class="mb-5" phx-change="search">
+      <input phx-debounce="300" name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
+      <%= live_patch "Clear Filters", to: Routes.page_path(@socket, :index), class: "text-blue-500" %>
+    </form>
+    <div class="">
+      <button phx-click="export-csv" phx-throttle="2000" class="rounded bg-gray-100 px-4 py-2">Export to CSV</button>
+    </div>
+  </div>
 
   <table class="stats__table">
     <thead>
