@@ -90,6 +90,7 @@ defmodule RushingWeb do
       import RushingWeb.ErrorHelpers
       import RushingWeb.Gettext
       alias RushingWeb.Router.Helpers, as: Routes
+      import Scrivener.HTML
     end
   end
 

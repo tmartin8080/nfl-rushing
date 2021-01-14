@@ -1,48 +1,75 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
+<h1 class="page__title">
+  <%= live_patch "Rushing Statistics", to: Routes.page_path(@socket, :index) %>
+</h1>
 
-  <form phx-change="suggest" phx-submit="search">
-    <input type="text" name="q" value="<%= @query %>" placeholder="Live dependency search" list="results" autocomplete="off"/>
-    <datalist id="results">
-      <%= for {app, _vsn} <- @results do %>
-        <option value="<%= app %>"><%= app %></option>
-      <% end %>
-    </datalist>
-    <button type="submit" phx-disable-with="Searching...">Go to Hexdocs</button>
+<section class="stats">
+  <h5 class="text-lg text-bold">Filter by Player</h5>
+
+  <form class="mb-5" phx-change="search">
+    <input name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
   </form>
-</section>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
+  <table class="stats__table">
+    <thead>
+      <tr>
+        <%= for heading <- @headings do %>
+          <%= if Enum.member?(@sortable, heading) do %>
+            <th class="stats__table-heading">
+              <div class="flex center-items">
+                <%= live_patch to: Routes.page_path(
+                    @socket,
+                    :index,
+                    [
+                      page: @params["page"],
+                      term: @params["term"],
+                      sort: [field: heading,
+                      direction: @target_direction]
+                    ]
+                  ), class: "text-blue-500" do %>
+                  <span><%= heading %></span>
+                <% end %>
+                <%= if @params["sort"]["field"] == heading do %>
+                  <%= if @params["sort"]["direction"] == "desc" do %>
+                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  <% else %>
+                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                  <% end %>
+                <% end %>
+              </div>
+            </th>
+          <% else %>
+            <th class="stats__table-heading"><%= heading %></th>
+          <% end %>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @data do %>
+        <tr>
+          <td class="stats__table-row"><%= row["Player"] %></td>
+          <td class="stats__table-row"><%= row["Team"] %></td>
+          <td class="stats__table-row"><%= row["Pos"] %></td>
+          <td class="stats__table-row"><%= row["Att"] %></td>
+          <td class="stats__table-row"><%= row["Att/G"] %></td>
+          <td class="stats__table-row"><%= row["Yds"] %></td>
+          <td class="stats__table-row"><%= row["Avg"] %></td>
+          <td class="stats__table-row"><%= row["Yds/G"] %></td>
+          <td class="stats__table-row"><%= row["TD"] %></td>
+          <td class="stats__table-row"><%= row["Lng"] %></td>
+          <td class="stats__table-row"><%= row["1st"] %></td>
+          <td class="stats__table-row"><%= row["1st%"] %></td>
+          <td class="stats__table-row"><%= row["20+"] %></td>
+          <td class="stats__table-row"><%= row["40+"] %></td>
+          <td class="stats__table-row"><%= row["FUM"] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="py-5 px-10 flex flex-row-reverse border-t border-gray-500">
+    <%= pagination_links @data %>
+  </div>
 </section>
