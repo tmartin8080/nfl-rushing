@@ -3,7 +3,7 @@ defmodule Rushing.Data do
   Responsible for loading and filtering data from rushing.json
   """
 
-  alias Rushing.Stats.PrepareValues
+  alias Rushing.Stats.SortFields
 
   @path "rushing.json"
   @search_column "Player"
@@ -24,8 +24,7 @@ defmodule Rushing.Data do
     "40+",
     "FUM"
   ]
-
-  @type filters :: %{search: String.t(), sort: map()}
+  @default_sort_direction "desc"
 
   defguard is_search_and_sort(term, field)
            when is_binary(term) and term != "" and is_binary(field) and field != ""
@@ -34,16 +33,16 @@ defmodule Rushing.Data do
   defguard is_sort(field) when is_binary(field) and field != ""
 
   @doc """
-  Main data load function.
+  Main data handling function.
   """
-  @spec load_data(filters()) :: map()
-  def load_data(filters) do
+  @spec load_data(map()) :: list()
+  def load_data(params) do
     @path
     |> read_file!()
     |> Jason.decode()
     |> case do
       {:ok, data} ->
-        apply_filters(data, filters)
+        apply_filters(data, params)
 
       {:error, msg} ->
         raise "Error reading file: #{msg}"
@@ -54,26 +53,22 @@ defmodule Rushing.Data do
     @headings
   end
 
-  # Search and Sort
-  defp apply_filters(data, %{search: term, sort: %{"field" => field} = sort})
+  defp apply_filters(data, %{"term" => term, "sort" => %{"field" => field}} = params)
        when is_search_and_sort(term, field) do
     data
     |> apply_search_filter(term)
-    |> apply_sort_filter(sort)
+    |> apply_sort_filter(params["sort"])
   end
 
-  # Only search
-  defp apply_filters(data, %{search: term}) when is_search(term) do
+  defp apply_filters(data, %{"term" => term}) when is_search(term) do
     apply_search_filter(data, term)
   end
 
-  # Only sort
-  defp apply_filters(data, %{sort: %{"field" => field} = sort})
+  defp apply_filters(data, %{"sort" => %{"field" => field} = sort})
        when is_sort(field) do
     apply_sort_filter(data, sort)
   end
 
-  # default
   defp apply_filters(data, _filters) do
     data
   end
@@ -85,10 +80,12 @@ defmodule Rushing.Data do
   end
 
   defp apply_sort_filter(data, %{"field" => field, "direction" => direction}) do
-    data
-    |> Enum.map(&PrepareValues.prepare(&1, field))
-    |> Enum.sort_by(fn row -> row[field] end, String.to_atom(direction))
+    direction = parse_direction(direction)
+    Enum.sort_by(data, &SortFields.handle_sort(&1, field), String.to_atom(direction))
   end
+
+  defp parse_direction(dir) when is_nil(dir) or dir == "", do: @default_sort_direction
+  defp parse_direction(dir), do: dir
 
   defp read_file!(path) do
     case File.read(path) do

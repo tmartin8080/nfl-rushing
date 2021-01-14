@@ -4,7 +4,7 @@
   <h5 class="text-lg text-bold">Filter by Player</h5>
 
   <form class="mb-5" phx-change="search">
-    <input name="term" type="search" class="rounded" value="<%= @filters.search %>"/>
+    <input name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
   </form>
 
   <table class="stats__table">
@@ -13,15 +13,28 @@
         <%= for heading <- @headings do %>
           <%= if Enum.member?(@sortable, heading) do %>
             <th class="stats__table-heading">
-              <a
-                class="text-blue-500 underline"
-                href="#"
-                phx-click="sort"
-                phx-value-field="<%= heading %>"
-                phx-value-direction="<%= @filters.sort["direction"] %>"
-              >
-                <%= heading %>
-              </a>
+              <div class="flex center-items">
+                <a
+                  class="text-blue-500 underline"
+                  href="#"
+                  phx-click="sort"
+                  phx-value-field="<%= heading %>"
+                  phx-value-direction="<%= @params["sort"]["direction"] %>"
+                >
+                  <span><%= heading %></span>
+                </a>
+                <%= if @params["sort"]["field"] == heading do %>
+                  <%= if @params["sort"]["direction"] == "desc" do %>
+                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  <% else %>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  <% end %>
+                <% end %>
+              </div>
             </th>
           <% else %>
             <th class="stats__table-heading"><%= heading %></th>

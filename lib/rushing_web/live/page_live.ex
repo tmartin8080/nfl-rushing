@@ -14,35 +14,48 @@ defmodule RushingWeb.PageLive do
   use RushingWeb, :live_view
   alias Rushing.Data
 
-  @default_filters %{
-    search: "",
-    sort: %{"field" => "", "direction" => "desc"}
-  }
   @sortable ["Yds", "Lng", "TD"]
+  @default_params %{}
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      socket
      |> assign(:sortable, @sortable)
-     |> assign(:filters, @default_filters)
-     |> assign(:data, Data.load_data(@default_filters))
+     |> assign(:params, @default_params)
      |> assign(:headings, Data.headings_list())}
   end
 
   @impl true
-  def handle_event("search", %{"term" => term}, %{assigns: %{filters: filters}} = socket) do
-    updated_filters = Map.replace!(filters, :search, term)
-    handle_reply(socket, updated_filters)
+  def handle_params(params, _, socket) do
+    # You could store the params as is but I like to store
+    # only what has been parsed/validated.
+    # params = parse_params(params)
+
+    {:noreply,
+     socket
+     |> assign(:params, params)
+     |> assign(:data, Data.load_data(params))}
   end
 
   @impl true
-  def handle_event("sort", params, %{assigns: %{filters: filters}} = socket) do
-    updated_filters = Map.replace!(filters, :sort, params)
-    handle_reply(socket, updated_filters)
+  def handle_event("search", %{"term" => term}, %{assigns: %{params: params}} = socket) do
+    updated_params = Map.put(params, "term", term)
+    handle_reply(socket, updated_params)
   end
 
-  defp handle_reply(socket, updated_filters) do
-    {:noreply, assign(socket, filters: updated_filters, data: Data.load_data(updated_filters))}
+  @impl true
+  def handle_event("sort", event_params, %{assigns: %{params: params}} = socket) do
+    updated_params = Map.put(params, "sort", event_params)
+    handle_reply(socket, updated_params)
+  end
+
+  defp handle_reply(socket, updated_params) do
+    IO.inspect(updated_params)
+    {:noreply, push_patch(socket, to: self_path(socket, :index, updated_params))}
+  end
+
+  def self_path(socket, action, extra) do
+    Routes.page_path(socket, action, Enum.into(extra, socket.assigns.params))
   end
 end
