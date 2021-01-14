@@ -14,23 +14,21 @@
           <%= if Enum.member?(@sortable, heading) do %>
             <th class="stats__table-heading">
               <div class="flex center-items">
-                <a
-                  class="text-blue-500 underline"
-                  href="#"
-                  phx-click="sort"
-                  phx-value-field="<%= heading %>"
-                  phx-value-direction="<%= @params["sort"]["direction"] %>"
-                >
+                <%= live_patch to: Routes.page_path(
+                    @socket,
+                    :index,
+                    [term: @params["term"], sort: [field: heading, direction: @target_direction]])
+                  do %>
                   <span><%= heading %></span>
-                </a>
+                <% end %>
                 <%= if @params["sort"]["field"] == heading do %>
                   <%= if @params["sort"]["direction"] == "desc" do %>
                     <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                     </svg>
                   <% else %>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                     </svg>
                   <% end %>
                 <% end %>

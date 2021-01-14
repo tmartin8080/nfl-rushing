@@ -16,6 +16,7 @@ defmodule RushingWeb.PageLive do
 
   @sortable ["Yds", "Lng", "TD"]
   @default_params %{}
+  @default_sort_direction "desc"
 
   @impl true
   def mount(_params, _session, socket) do
@@ -28,13 +29,10 @@ defmodule RushingWeb.PageLive do
 
   @impl true
   def handle_params(params, _, socket) do
-    # You could store the params as is but I like to store
-    # only what has been parsed/validated.
-    # params = parse_params(params)
-
     {:noreply,
      socket
      |> assign(:params, params)
+     |> assign(:target_direction, target_direction(params))
      |> assign(:data, Data.load_data(params))}
   end
 
@@ -44,16 +42,22 @@ defmodule RushingWeb.PageLive do
     handle_reply(socket, updated_params)
   end
 
-  @impl true
-  def handle_event("sort", event_params, %{assigns: %{params: params}} = socket) do
-    updated_params = Map.put(params, "sort", event_params)
-    handle_reply(socket, updated_params)
+  defp handle_reply(socket, updated_params) do
+    {:noreply,
+     socket
+     |> assign(:target_direction, target_direction(socket))
+     |> push_patch(to: self_path(socket, :index, updated_params))}
   end
 
-  defp handle_reply(socket, updated_params) do
-    IO.inspect(updated_params)
-    {:noreply, push_patch(socket, to: self_path(socket, :index, updated_params))}
+  defp target_direction(%{"sort" => %{"direction" => dir}}) do
+    case dir do
+      "desc" -> "asc"
+      "asc" -> "desc"
+      _ -> @default_sort_direction
+    end
   end
+
+  defp target_direction(_), do: @default_sort_direction
 
   def self_path(socket, action, extra) do
     Routes.page_path(socket, action, Enum.into(extra, socket.assigns.params))

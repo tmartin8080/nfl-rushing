@@ -85,7 +85,13 @@ defmodule Rushing.Data do
   end
 
   defp parse_direction(dir) when is_nil(dir) or dir == "", do: @default_sort_direction
-  defp parse_direction(dir), do: dir
+
+  defp parse_direction(dir) do
+    case Enum.member?(["asc", "desc"], dir) do
+      true -> dir
+      false -> @default_sort_direction
+    end
+  end
 
   defp read_file!(path) do
     case File.read(path) do
