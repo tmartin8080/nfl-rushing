@@ -27,6 +27,12 @@ defmodule Rushing.Data do
 
   @type filters :: %{search: String.t(), sort: map()}
 
+  defguard is_search_and_sort(term, field)
+           when is_binary(term) and term != "" and is_binary(field) and field != ""
+
+  defguard is_search(term) when is_binary(term) and term != ""
+  defguard is_sort(field) when is_binary(field) and field != ""
+
   @doc """
   Main data load function.
   """
@@ -48,22 +54,29 @@ defmodule Rushing.Data do
     @headings
   end
 
-  defp apply_filters(data, %{search: term, sort: sort}) do
+  # Search and Sort
+  defp apply_filters(data, %{search: term, sort: %{"field" => field} = sort})
+       when is_search_and_sort(term, field) do
     data
     |> apply_search_filter(term)
     |> apply_sort_filter(sort)
   end
 
-  defp apply_filters(data, %{search: term}) do
-    data
-    |> apply_search_filter(term)
+  # Only search
+  defp apply_filters(data, %{search: term}) when is_search(term) do
+    apply_search_filter(data, term)
   end
 
-  defp apply_filters(data, %{sort: sort}) do
+  # Only sort
+  defp apply_filters(data, %{sort: %{"field" => field} = sort})
+       when is_sort(field) do
     apply_sort_filter(data, sort)
   end
 
-  defp apply_filters(data, _filters), do: data
+  # default
+  defp apply_filters(data, _filters) do
+    data
+  end
 
   defp apply_search_filter(data, term) do
     Enum.filter(data, fn row ->
