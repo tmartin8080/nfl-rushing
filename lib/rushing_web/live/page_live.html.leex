@@ -1,48 +1,40 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
+<h1 class="page__title">Rushing Statistics</h1>
 
-  <form phx-change="suggest" phx-submit="search">
-    <input type="text" name="q" value="<%= @query %>" placeholder="Live dependency search" list="results" autocomplete="off"/>
-    <datalist id="results">
-      <%= for {app, _vsn} <- @results do %>
-        <option value="<%= app %>"><%= app %></option>
-      <% end %>
-    </datalist>
-    <button type="submit" phx-disable-with="Searching...">Go to Hexdocs</button>
+<section class="stats">
+  <h5 class="text-lg text-bold">Filter by Player</h5>
+
+  <form class="mb-5" phx-change="search">
+    <input name="term" type="search" class="rounded" value="<%= @filters.search %>"/>
   </form>
-</section>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
+  <table class="stats__table">
+    <thead>
+      <tr>
+        <%= for heading <- @headings do %>
+          <th class="stats__table-heading"><%= heading %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @data do %>
+        <tr>
+          <td class="stats__table-row"><%= row["Player"] %></td>
+          <td class="stats__table-row"><%= row["Team"] %></td>
+          <td class="stats__table-row"><%= row["Pos"] %></td>
+          <td class="stats__table-row"><%= row["At"] %></td>
+          <td class="stats__table-row"><%= row["Att/G"] %></td>
+          <td class="stats__table-row"><%= row["Yds"] %></td>
+          <td class="stats__table-row"><%= row["Avg"] %></td>
+          <td class="stats__table-row"><%= row["Yds/G"] %></td>
+          <td class="stats__table-row"><%= row["TD"] %></td>
+          <td class="stats__table-row"><%= row["Lng"] %></td>
+          <td class="stats__table-row"><%= row["1st"] %></td>
+          <td class="stats__table-row"><%= row["1st%"] %></td>
+          <td class="stats__table-row"><%= row["20+"] %></td>
+          <td class="stats__table-row"><%= row["40+"] %></td>
+          <td class="stats__table-row"><%= row["FUM"] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </section>

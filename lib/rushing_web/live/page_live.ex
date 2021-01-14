@@ -1,39 +1,68 @@
 defmodule RushingWeb.PageLive do
   use RushingWeb, :live_view
 
+  @path "rushing.json"
+  @default_filters %{search: "", sort: []}
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+    {:ok,
+     socket
+     |> assign(:filters, @default_filters)
+     |> assign(:data, load_data(@default_filters))
+     |> assign(:headings, headings())}
   end
 
   @impl true
-  def handle_event("suggest", %{"q" => query}, socket) do
-    {:noreply, assign(socket, results: search(query), query: query)}
+  def handle_event("search", %{"term" => term}, %{assigns: %{filters: filters}} = socket) do
+    updated_filters = Map.replace!(filters, :search, term)
+    IO.inspect(updated_filters)
+    {:noreply, assign(socket, data: load_data(updated_filters))}
   end
 
-  @impl true
-  def handle_event("search", %{"q" => query}, socket) do
-    case search(query) do
-      %{^query => vsn} ->
-        {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
+  defp load_data(filters) do
+    @path
+    |> read_file!()
+    |> Jason.decode()
+    |> case do
+      {:ok, data} ->
+        apply_filters(data, filters)
 
-      _ ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "No dependencies found matching \"#{query}\"")
-         |> assign(results: %{}, query: query)}
+      {:error, msg} ->
+        raise "Error reading file: #{msg}"
     end
   end
 
-  defp search(query) do
-    if not RushingWeb.Endpoint.config(:code_reloader) do
-      raise "action disabled when not in development"
-    end
+  defp apply_filters(data, %{search: term}) when term != "" do
+    Enum.filter(data, fn row -> row["Player"] =~ term end)
+  end
 
-    for {app, desc, vsn} <- Application.started_applications(),
-        app = to_string(app),
-        String.starts_with?(app, query) and not List.starts_with?(desc, ~c"ERTS"),
-        into: %{},
-        do: {app, vsn}
+  defp apply_filters(data, _filters), do: data
+
+  defp read_file!(path) do
+    case File.read(path) do
+      {:ok, str} -> str
+      {:error, _} -> raise "File not found: #{path}"
+    end
+  end
+
+  defp headings do
+    [
+      "Player",
+      "Team",
+      "Pos",
+      "Att",
+      "Att/G",
+      "Yds",
+      "Avg",
+      "Yds/G",
+      "TD",
+      "Lng",
+      "1st",
+      "1st%",
+      "20+",
+      "40+",
+      "FUM"
+    ]
   end
 end
