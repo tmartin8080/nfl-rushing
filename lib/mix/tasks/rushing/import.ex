@@ -5,6 +5,7 @@ defmodule Mix.Tasks.Rushing.Import do
     mix rushing.import "rushing.json"
   """
   use Mix.Task
+  alias Rushing.Repo
 
   require Logger
 
@@ -20,8 +21,10 @@ defmodule Mix.Tasks.Rushing.Import do
          do: result
   end
 
-  defp import_json_file(repo, excluded_codes) do
+  defp import_json_file(_repo, _path) do
+    true
     # case repo.get_by(Region, name: "US (All)") do
+    #
     #   %Region{} ->
     #     Logger.info("Region named 'US (All) already exists, aborting.")
     #     :error
