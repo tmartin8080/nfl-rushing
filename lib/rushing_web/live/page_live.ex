@@ -15,7 +15,6 @@ defmodule RushingWeb.PageLive do
   alias Rushing.Data
 
   @sortable ["Yds", "Lng", "TD"]
-  @default_params %{}
   @default_sort_direction "desc"
 
   @impl true
@@ -38,10 +37,7 @@ defmodule RushingWeb.PageLive do
   @impl true
   def handle_event("search", %{"term" => term}, %{assigns: %{params: params}} = socket) do
     updated_params = Map.put(params, "term", term)
-    handle_reply(socket, updated_params)
-  end
 
-  defp handle_reply(socket, updated_params) do
     {:noreply,
      socket
      |> assign(:target_direction, target_direction(socket))
