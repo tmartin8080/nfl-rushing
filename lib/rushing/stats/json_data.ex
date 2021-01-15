@@ -1,4 +1,4 @@
-defmodule Rushing.Data do
+defmodule Rushing.Stats.JSONData do
   @moduledoc """
   Responsible for loading and filtering data from rushing.json
   """
@@ -37,8 +37,8 @@ defmodule Rushing.Data do
   Main data handling function.
   """
   @spec load_data(map(), list()) :: [map()]
-  def load_data(params, opts \\ []) do
-    @path
+  def load_data(params \\ %{}, opts \\ []) do
+    Keyword.get(opts, :path, @path)
     |> read_file!()
     |> Jason.decode()
     |> case do

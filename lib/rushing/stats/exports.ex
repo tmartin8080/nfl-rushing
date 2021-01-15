@@ -4,14 +4,14 @@ defmodule Rushing.Stats.Exports do
   """
 
   alias NimbleCSV.RFC4180, as: CSV
-  alias Rushing.Data
+  alias Rushing.Stats.JSONData, as: Data
 
   @default_root_dir "priv/exports"
+  @default_filename "rushing-report"
   @default_file_modes [:write, :utf8]
 
   def generate_csv(params) do
-    day = Date.utc_today() |> Date.to_string()
-    filename = "rushing-report-#{day}-#{:random.uniform(1000)}.csv"
+    filename = build_filename()
     local_path = Application.app_dir(:rushing, "#{@default_root_dir}/#{filename}")
 
     file_modes = @default_file_modes
@@ -33,5 +33,12 @@ defmodule Rushing.Stats.Exports do
   defp convert_to_row(row) do
     Data.headings_list()
     |> Enum.into([], fn heading -> row[heading] end)
+  end
+
+  defp build_filename do
+    today = DateTime.utc_now()
+    day = Date.to_string(today)
+    timestamp = DateTime.to_unix(today)
+    "#{@default_filename}-#{day}-#{timestamp}.csv"
   end
 end
