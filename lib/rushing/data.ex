@@ -52,6 +52,14 @@ defmodule Rushing.Data do
     end
   end
 
+  @doc """
+  List table and csv headings.
+  """
+  @spec headings_list() :: [String.t()]
+  def headings_list do
+    @headings
+  end
+
   defp maybe_paginate(data, _, paginate: false), do: data
 
   defp maybe_paginate(data, params, _) do
@@ -59,10 +67,6 @@ defmodule Rushing.Data do
 
     data
     |> Scrivener.paginate(config)
-  end
-
-  def headings_list do
-    @headings
   end
 
   defp apply_filters(data, %{"term" => term, "sort" => %{"field" => field}} = params)
