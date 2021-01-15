@@ -1,15 +1,15 @@
-defmodule Rushing.DataTest do
+defmodule Rushing.Stats.DataTest do
   use Rushing.DataCase
-  alias Rushing.Data
+  alias Rushing.Stats.JSONData, as: Data
 
   describe "load_data/1" do
     test "loads paginated data" do
-      data = Data.load_data(%{})
+      data = Data.load_data()
       assert Enum.count(data) == 15
     end
 
     test "loads unpaginated data" do
-      data = Data.load_data(%{}, paginate: false)
+      data = Data.load_data(, paginate: false)
       assert Enum.count(data) == 326
     end
 

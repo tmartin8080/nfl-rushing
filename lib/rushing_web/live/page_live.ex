@@ -12,7 +12,7 @@ defmodule RushingWeb.PageLive do
   - Update the section Installation and running this solution in the README file explaining how to run your code
   """
   use RushingWeb, :live_view
-  alias Rushing.Data
+  alias Rushing.Stats.JSONData, as: Data
 
   @sortable ["Yds", "Lng", "TD"]
   @default_sort_direction "desc"
