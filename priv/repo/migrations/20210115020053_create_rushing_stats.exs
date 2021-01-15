@@ -19,5 +19,10 @@ defmodule Rushing.Repo.Migrations.CreateRushingStats do
       add :forty_plus_yards, :integer, default: 0
       add :fumbles, :integer, default: 0
     end
+
+    create index(:rushing_stats, :player_name)
+    create index(:rushing_stats, :total_yards)
+    create index(:rushing_stats, :longest)
+    create index(:rushing_stats, :total_touchdowns)
   end
 end

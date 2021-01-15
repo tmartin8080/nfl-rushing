@@ -12,6 +12,12 @@ Setup (OSX)
 $ bin/setup
 ```
 
+Import `rushing.json` data:
+
+```
+$ mix rushing.import "rushing.json"
+```
+
 Start:
 
 ```

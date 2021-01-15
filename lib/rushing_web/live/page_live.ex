@@ -12,7 +12,9 @@ defmodule RushingWeb.PageLive do
   - Update the section Installation and running this solution in the README file explaining how to run your code
   """
   use RushingWeb, :live_view
-  alias Rushing.Stats.JSONData, as: Data
+
+  # Switch between loading the JSON file and DB
+  alias Rushing.Stats.Data
 
   @sortable ["Yds", "Lng", "TD"]
   @default_sort_direction "desc"
@@ -22,7 +24,7 @@ defmodule RushingWeb.PageLive do
     {:ok,
      socket
      |> assign(:sortable, @sortable)
-     |> assign(:headings, Data.headings_list())}
+     |> assign(:headings, Data.abbreviation_map())}
   end
 
   @impl true

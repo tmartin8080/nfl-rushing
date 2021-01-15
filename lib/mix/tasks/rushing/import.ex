@@ -6,7 +6,8 @@ defmodule Mix.Tasks.Rushing.Import do
   """
   use Mix.Task
   alias Rushing.Repo
-  alias Rushing.Stats.RushingStats
+  alias Rushing.Stats.Data
+  alias Rushing.Stats.Schema.RushingStats
 
   require Logger
   @stream_chunk_size 100
@@ -42,7 +43,7 @@ defmodule Mix.Tasks.Rushing.Import do
   # for every row
   # build a map for insert_all
   defp prepare_insert(stream_row) do
-    abbreviation_map = RushingStats.abbreviation_map()
+    abbreviation_map = Data.abbreviation_map()
 
     stream_row
     |> Enum.map(fn {stream_row_key, stream_row_value} ->
@@ -55,19 +56,19 @@ defmodule Mix.Tasks.Rushing.Import do
   end
 
   defp prepare_value(:attempts_per_game_avg, value) when is_integer(value),
-    do: RushingStats.integer_to_float(value)
+    do: Data.integer_to_float(value)
 
   defp prepare_value(:first_down_percentage, value) when is_integer(value),
-    do: RushingStats.integer_to_float(value)
+    do: Data.integer_to_float(value)
 
   defp prepare_value(:yards_per_game, value) when is_integer(value),
-    do: RushingStats.integer_to_float(value)
+    do: Data.integer_to_float(value)
 
   defp prepare_value(:avg_yards_per_attempt, value) when is_integer(value),
-    do: RushingStats.integer_to_float(value)
+    do: Data.integer_to_float(value)
 
   defp prepare_value(:total_yards, value) when is_binary(value),
-    do: RushingStats.binary_to_integer(value)
+    do: Data.binary_to_integer(value)
 
   defp prepare_value(:longest, value) when is_integer(value),
     do: Integer.to_string(value)

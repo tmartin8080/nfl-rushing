@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-github_changelog_generator -u devato -p slate

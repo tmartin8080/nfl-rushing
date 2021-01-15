@@ -24,7 +24,7 @@
   <table class="stats__table">
     <thead>
       <tr>
-        <%= for heading <- @headings do %>
+        <%= for {column, heading} <- @headings do %>
           <%= if Enum.member?(@sortable, heading) do %>
             <th class="stats__table-heading">
               <div class="flex center-items">
@@ -34,7 +34,7 @@
                     [
                       page: @params["page"],
                       term: @params["term"],
-                      sort: [field: heading,
+                      sort: [field: column,
                       direction: @target_direction]
                     ]
                   ), class: "text-blue-500" do %>
@@ -62,21 +62,21 @@
     <tbody>
       <%= for row <- @data do %>
         <tr>
-          <td class="stats__table-row"><%= row["Player"] %></td>
-          <td class="stats__table-row"><%= row["Team"] %></td>
-          <td class="stats__table-row"><%= row["Pos"] %></td>
-          <td class="stats__table-row"><%= row["Att"] %></td>
-          <td class="stats__table-row"><%= row["Att/G"] %></td>
-          <td class="stats__table-row"><%= row["Yds"] %></td>
-          <td class="stats__table-row"><%= row["Avg"] %></td>
-          <td class="stats__table-row"><%= row["Yds/G"] %></td>
-          <td class="stats__table-row"><%= row["TD"] %></td>
-          <td class="stats__table-row"><%= row["Lng"] %></td>
-          <td class="stats__table-row"><%= row["1st"] %></td>
-          <td class="stats__table-row"><%= row["1st%"] %></td>
-          <td class="stats__table-row"><%= row["20+"] %></td>
-          <td class="stats__table-row"><%= row["40+"] %></td>
-          <td class="stats__table-row"><%= row["FUM"] %></td>
+          <td class="stats__table-row"><%= row.player_name %></td>
+          <td class="stats__table-row"><%= row.team %></td>
+          <td class="stats__table-row"><%= row.position %></td>
+          <td class="stats__table-row"><%= row.attempts %></td>
+          <td class="stats__table-row"><%= row.attempts_per_game_avg %></td>
+          <td class="stats__table-row"><%= row.total_yards %></td>
+          <td class="stats__table-row"><%= row.avg_yards_per_attempt %></td>
+          <td class="stats__table-row"><%= row.yards_per_game %></td>
+          <td class="stats__table-row"><%= row.total_touchdowns %></td>
+          <td class="stats__table-row"><%= row.longest %></td>
+          <td class="stats__table-row"><%= row.first_downs %></td>
+          <td class="stats__table-row"><%= row.first_down_percentage %></td>
+          <td class="stats__table-row"><%= row.twenty_plus_yards %></td>
+          <td class="stats__table-row"><%= row.forty_plus_yards %></td>
+          <td class="stats__table-row"><%= row.fumbles %></td>
         </tr>
       <% end %>
     </tbody>

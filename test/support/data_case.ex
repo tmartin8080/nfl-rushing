@@ -24,6 +24,7 @@ defmodule Rushing.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Rushing.DataCase
+      import Rushing.Factory
     end
   end
 

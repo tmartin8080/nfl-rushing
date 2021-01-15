@@ -4,7 +4,7 @@ defmodule Rushing.MixProject do
   def project do
     [
       app: :rushing,
-      version: "0.1.0",
+      version: "0.2.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -53,7 +53,7 @@ defmodule Rushing.MixProject do
       {:scrivener_html, ">= 0.0.0"},
       {:nimble_csv, "~> 1.0"},
       {:jaxon, "~> 2.0"},
-      {:rexbug, ">= 1.0.0"}
+      {:ex_machina, "~> 2.5.0", only: :test}
     ]
   end
 
