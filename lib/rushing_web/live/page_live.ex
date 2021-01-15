@@ -44,12 +44,6 @@ defmodule RushingWeb.PageLive do
      |> push_patch(to: self_path(socket, :index, updated_params))}
   end
 
-  @impl true
-  def handle_event("export-csv", _, %{assigns: %{params: params}} = socket) do
-    IO.inspect(params)
-    {:noreply, socket}
-  end
-
   defp target_direction(%{"sort" => %{"direction" => dir}}) do
     case dir do
       "desc" -> "asc"

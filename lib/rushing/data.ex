@@ -36,11 +36,8 @@ defmodule Rushing.Data do
   @doc """
   Main data handling function.
   """
-  @spec load_data(map()) :: list()
-
-  def load_data(params) do
-    config = maybe_put_default_config(params)
-
+  @spec load_data(map(), list()) :: [map()]
+  def load_data(params, opts \\ []) do
     @path
     |> read_file!()
     |> Jason.decode()
@@ -48,11 +45,20 @@ defmodule Rushing.Data do
       {:ok, data} ->
         data
         |> apply_filters(params)
-        |> Scrivener.paginate(config)
+        |> maybe_paginate(params, opts)
 
       {:error, msg} ->
         raise "Error reading file: #{msg}"
     end
+  end
+
+  defp maybe_paginate(data, _, paginate: false), do: data
+
+  defp maybe_paginate(data, params, _) do
+    config = maybe_put_default_config(params)
+
+    data
+    |> Scrivener.paginate(config)
   end
 
   def headings_list do

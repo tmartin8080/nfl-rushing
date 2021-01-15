@@ -3,30 +3,35 @@ defmodule Rushing.Stats.Exports do
   Generates CSV export files using search filter results.
   """
 
+  alias NimbleCSV.RFC4180, as: CSV
   alias Rushing.Data
+
+  @default_root_dir "priv/exports"
+  @default_file_modes [:write, :utf8]
 
   def generate_csv(params) do
     day = Date.utc_today() |> Date.to_string()
-    filename = "priv/exports/rushing-report-#{day}-#{:random.uniform(1000)}.csv"
-    path = Application.app_dir(:rushing, filename)
+    filename = "rushing-report-#{day}-#{:random.uniform(1000)}.csv"
+    local_path = Application.app_dir(:rushing, "#{@default_root_dir}/#{filename}")
 
-    NimbleCSV.define(MyParser, separator: "\t", escape: "\"")
+    file_modes = @default_file_modes
+    output = File.stream!(local_path, file_modes)
 
-    params
-    |> Data.load_data()
-    |> Stream.into(File.stream!("large_file.csv"))
+    data =
+      Data.load_data(params, paginate: false)
+      |> Enum.map(&convert_to_row(&1))
+
+    [Data.headings_list()]
+    |> Stream.concat(data)
+    |> CSV.dump_to_stream()
+    |> Stream.into(output)
     |> Stream.run()
 
-    # |> Enum.into(File.wite(path))
+    {:ok, local_path}
+  end
 
-    #   def write_csv_file() do
-    # File.write!("users.csv", data_to_csv)
-    # end
-
-    # defp data_to_csv() do
-    # @user_data
-    # end
-
-    {:ok, filename}
+  defp convert_to_row(row) do
+    Data.headings_list()
+    |> Enum.into([], fn heading -> row[heading] end)
   end
 end

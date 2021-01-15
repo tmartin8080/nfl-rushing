@@ -3,8 +3,13 @@ defmodule Rushing.DataTest do
   alias Rushing.Data
 
   describe "load_data/1" do
-    test "loads json data" do
+    test "loads paginated data" do
       data = Data.load_data(%{})
+      assert Enum.count(data) == 15
+    end
+
+    test "loads unpaginated data" do
+      data = Data.load_data(%{}, paginate: false)
       assert Enum.count(data) == 326
     end
 
