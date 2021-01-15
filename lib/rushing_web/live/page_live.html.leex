@@ -13,7 +13,10 @@
     <div class="">
       <form action="<%= Routes.exports_path(@socket, :create) %>" method="post">
       <%= form_tag Routes.exports_path(@socket, :create), action: :post %>
-        <button phx-click="export-csv" class="rounded bg-gray-100 px-4 py-2">Export to CSV</button>
+        <input type="hidden" name="term" value="<%= @params["term"] %>" />
+        <input type="hidden" name="sort[field]" value="<%= @params["sort"]["field"] %>" />
+        <input type="hidden" name="sort[direction]" value="<%= @params["sort"]["direction"] %>" />
+        <button type="submit" class="rounded bg-gray-100 px-4 py-2">Export to CSV</button>
       </form>
     </div>
   </div>

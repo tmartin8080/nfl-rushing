@@ -51,7 +51,9 @@ defmodule Rushing.MixProject do
       {:scrivener, "~> 2.0"},
       {:scrivener_list, "~> 2.0"},
       {:scrivener_html, ">= 0.0.0"},
-      {:nimble_csv, "~> 1.0"}
+      {:nimble_csv, "~> 1.0"},
+      {:jaxon, "~> 2.0"},
+      {:rexbug, ">= 1.0.0"}
     ]
   end
 
