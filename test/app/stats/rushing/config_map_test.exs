@@ -25,4 +25,10 @@ defmodule App.Stats.Rushing.ConfigMapTest do
                ]
     end
   end
+
+  describe "get_key_for_value/1" do
+    test "gets key atom for value" do
+      assert ConfigMap.get_key_for_value("TD") == :total_touchdowns
+    end
+  end
 end

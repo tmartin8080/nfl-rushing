@@ -31,4 +31,10 @@ defmodule App.Stats.Rushing.ConfigMap do
 
   def list_keys, do: Keyword.keys(list())
   def list_values, do: Keyword.values(list())
+
+  def get_key_for_value(value) when is_binary(value) and value != "" do
+    list()
+    |> Enum.find(fn {_key, val} -> val == value end)
+    |> elem(0)
+  end
 end

@@ -20,7 +20,6 @@ defmodule Mix.Tasks.App.Import.Rushing do
 
   @shortdoc "Imports stream data from given json file"
   @impl true
-  @spec run(String.t()) :: any()
   def run(path) do
     Logger.info("Importing data from #{path}...")
 
@@ -52,9 +51,7 @@ defmodule Mix.Tasks.App.Import.Rushing do
   end
 
   defp translate_source_map_to_insert_map({stream_row_key, stream_row_value}, insert_row_map) do
-    {insert_key, _} =
-      ConfigMap.list()
-      |> Enum.find(fn {_key, value} -> value == stream_row_key end)
+    insert_key = ConfigMap.get_key_for_value(stream_row_key)
 
     Map.put(insert_row_map, insert_key, prepare_value(insert_key, stream_row_value))
   end
