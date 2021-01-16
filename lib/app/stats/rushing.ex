@@ -20,6 +20,7 @@ defmodule App.Stats.Rushing do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  alias App.Stats.Rushing.ConfigMap
 
   schema "stats_rushing" do
     field :player_name, :string
@@ -42,34 +43,7 @@ defmodule App.Stats.Rushing do
 
   def changeset(stats_rushing, attrs) do
     stats_rushing
-    |> cast(attrs, config_map_keys())
-    |> validate_required(config_map_keys())
+    |> cast(attrs, ConfigMap.list_keys())
+    |> validate_required(ConfigMap.list_keys())
   end
-
-  @doc """
-  Map database columns to Titles and field values.
-  Keyword list because Maps order by key value.
-  """
-  def config_map do
-    [
-      player_name: [abbreviation: "Player", import_filter: nil],
-      team: [abbreviation: "Team", import_filter: nil],
-      position: [abbreviation: "POS", import_filter: nil],
-      attempts: [abbreviation: "Att", import_filter: nil],
-      attempts_per_game_avg: [abbreviation: "Att/G", import_filter: nil],
-      total_yards: [abbreviation: "Yds", import_filter: nil],
-      avg_yards_per_attempt: [abbreviation: "Avg", import_filter: nil],
-      yards_per_game: [abbreviation: "Yds/G", import_filter: nil],
-      total_touchdowns: [abbreviation: "TD", import_filter: nil],
-      longest: [abbreviation: "TD", import_filter: nil],
-      first_downs: [abbreviation: "1st", import_filter: nil],
-      first_down_percentage: [abbreviation: "1st%", import_filter: nil],
-      twenty_plus_yards: [abbreviation: "20%", import_filter: nil],
-      forty_plus_yards: [abbreviation: "40%", import_filter: nil],
-      fumbles: [abbreviation: "FUM", import_filter: nil]
-    ]
-  end
-
-  def config_map_keys, do: Keyword.keys(config_map())
-  def config_map_values, do: Keyword.values(config_map())
 end

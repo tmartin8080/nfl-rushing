@@ -1,16 +1,17 @@
-defmodule Mix.Tasks.App.Import do
+defmodule Mix.Tasks.App.Import.Rushing do
   @moduledoc """
   Imports json data from file by streaming the file
   into chunks which are inserted using `insert_all`
   100 records at a time.
 
   Usage:
-    mix app.import "rushing.json"
+    mix app.import.rushing "rushing.json"
   """
   use Mix.Task
   alias App.Repo
   alias App.Stats.Rushing
-  alias App.System.DataHelper
+  alias App.Stats.Rushing.ConfigMap
+  alias App.System.DataHelpers
 
   require Logger
 
@@ -52,26 +53,26 @@ defmodule Mix.Tasks.App.Import do
 
   defp translate_source_map_to_insert_map({stream_row_key, stream_row_value}, insert_row_map) do
     {insert_key, _} =
-      Rushing.config_map()
+      ConfigMap.list()
       |> Enum.find(fn {_key, value} -> value == stream_row_key end)
 
     Map.put(insert_row_map, insert_key, prepare_value(insert_key, stream_row_value))
   end
 
   defp prepare_value(:attempts_per_game_avg, value) when is_integer(value),
-    do: DataHelper.integer_to_float(value)
+    do: DataHelpers.integer_to_float(value)
 
   defp prepare_value(:first_down_percentage, value) when is_integer(value),
-    do: DataHelper.integer_to_float(value)
+    do: DataHelpers.integer_to_float(value)
 
   defp prepare_value(:yards_per_game, value) when is_integer(value),
-    do: DataHelper.integer_to_float(value)
+    do: DataHelpers.integer_to_float(value)
 
   defp prepare_value(:avg_yards_per_attempt, value) when is_integer(value),
-    do: DataHelper.integer_to_float(value)
+    do: DataHelpers.integer_to_float(value)
 
   defp prepare_value(:total_yards, value) when is_binary(value),
-    do: DataHelper.binary_to_integer(value)
+    do: DataHelpers.binary_to_integer(value)
 
   defp prepare_value(:longest, value) when is_integer(value),
     do: Integer.to_string(value)
