@@ -6,18 +6,12 @@ defmodule App.StatsTest do
   describe "stats_rushing" do
     alias App.Stats.Rushing
 
-    @valid_attrs %{
-      attempts: 42,
-      player_name: "some player_name",
-      position: "some position",
-      team: "some team"
-    }
-    @update_attrs %{
-      attempts: 43,
-      player_name: "some updated player_name",
-      position: "some updated position",
-      team: "some updated team"
-    }
+    @valid_attrs params_for(:stats_rushing, player_name: "Jon Smith")
+    @update_attrs params_for(:stats_rushing,
+                    player_name: "Updated Smith",
+                    position: "some updated position",
+                    team: "some updated team"
+                  )
     @invalid_attrs %{attempts: nil, player_name: nil, position: nil, team: nil}
 
     def rushing_fixture(attrs \\ %{}) do
@@ -41,10 +35,10 @@ defmodule App.StatsTest do
 
     test "create_rushing/1 with valid data creates a rushing" do
       assert {:ok, %Rushing{} = rushing} = Stats.create_rushing(@valid_attrs)
-      assert rushing.attempts == 42
-      assert rushing.player_name == "some player_name"
-      assert rushing.position == "some position"
-      assert rushing.team == "some team"
+      assert rushing.attempts == 100
+      assert rushing.player_name == "Jon Smith"
+      assert rushing.position == "RB"
+      assert rushing.team == "JAX"
     end
 
     test "create_rushing/1 with invalid data returns error changeset" do
@@ -54,8 +48,8 @@ defmodule App.StatsTest do
     test "update_rushing/2 with valid data updates the rushing" do
       rushing = rushing_fixture()
       assert {:ok, %Rushing{} = rushing} = Stats.update_rushing(rushing, @update_attrs)
-      assert rushing.attempts == 43
-      assert rushing.player_name == "some updated player_name"
+      assert rushing.attempts == 100
+      assert rushing.player_name == "Updated Smith"
       assert rushing.position == "some updated position"
       assert rushing.team == "some updated team"
     end
