@@ -52,7 +52,7 @@ defmodule Mix.Tasks.App.Import do
 
   defp translate_source_map_to_insert_map({stream_row_key, stream_row_value}, insert_row_map) do
     {insert_key, _} =
-      Rushing.abbreviation_map()
+      Rushing.config_map()
       |> Enum.find(fn {_key, value} -> value == stream_row_key end)
 
     Map.put(insert_row_map, insert_key, prepare_value(insert_key, stream_row_value))
