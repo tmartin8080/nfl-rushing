@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+source ./bin/utils/functions.sh
+
+header "Starting server with iex"
+
+iex -S mix phx.server

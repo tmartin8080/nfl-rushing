@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+source ./bin/utils/functions.sh
+
+header "Compiling..."
+mix compile --warnings-as-errors --force
+
+header "Checking format..."
+mix format --check-formatted
+
+header "Checking credo..."
+mix credo --strict
+
+header "Running tests..."
+mix test
+
+success "Testing complete."
