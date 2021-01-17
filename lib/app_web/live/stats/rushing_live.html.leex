@@ -1,0 +1,87 @@
+<h1 class="page__title">
+  <%= live_patch "Rushing Statistics", to: Routes.rushing_path(@socket, :index) %>
+</h1>
+
+<section class="stats">
+  <h5 class="text-lg text-bold">Filter by Player</h5>
+
+  <div class="flex justify-between	">
+    <form class="mb-5" phx-change="search">
+      <input phx-debounce="300" name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
+      <%= live_patch "Clear Filters", to: Routes.rushing_path(@socket, :index), class: "text-blue-500" %>
+    </form>
+    <div class="">
+      <form action="<%= Routes.exports_path(@socket, :create) %>" method="post">
+      <%= form_tag Routes.exports_path(@socket, :create), action: :post %>
+        <input type="hidden" name="term" value="<%= @params["term"] %>" />
+        <input type="hidden" name="sort[field]" value="<%= @params["sort"]["field"] %>" />
+        <input type="hidden" name="sort[direction]" value="<%= @params["sort"]["direction"] %>" />
+        <button type="submit" class="rounded bg-gray-100 px-4 py-2">Export to CSV</button>
+      </form>
+    </div>
+  </div>
+
+  <table class="stats__table">
+    <thead>
+      <tr>
+        <%= for {column, heading} <- @headings do %>
+          <%= if Enum.member?(@sortable, heading) do %>
+            <th class="stats__table-heading">
+              <div class="flex center-items">
+                <%= live_patch to: Routes.rushing_path(
+                    @socket,
+                    :index,
+                    [
+                      page: @params["page"],
+                      term: @params["term"],
+                      sort: [field: column,
+                      direction: @target_direction]
+                    ]
+                  ), class: "text-blue-500" do %>
+                  <span><%= heading %></span>
+                <% end %>
+                <%= if @params["sort"]["field"] == heading do %>
+                  <%= if @params["sort"]["direction"] == "desc" do %>
+                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  <% else %>
+                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                  <% end %>
+                <% end %>
+              </div>
+            </th>
+          <% else %>
+            <th class="stats__table-heading"><%= heading %></th>
+          <% end %>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @data do %>
+        <tr>
+          <td class="stats__table-row"><%= row.player_name %></td>
+          <td class="stats__table-row"><%= row.team %></td>
+          <td class="stats__table-row"><%= row.position %></td>
+          <td class="stats__table-row"><%= row.attempts %></td>
+          <td class="stats__table-row"><%= row.attempts_per_game_avg %></td>
+          <td class="stats__table-row"><%= row.total_yards %></td>
+          <td class="stats__table-row"><%= row.avg_yards_per_attempt %></td>
+          <td class="stats__table-row"><%= row.yards_per_game %></td>
+          <td class="stats__table-row"><%= row.total_touchdowns %></td>
+          <td class="stats__table-row"><%= row.longest %></td>
+          <td class="stats__table-row"><%= row.first_downs %></td>
+          <td class="stats__table-row"><%= row.first_down_percentage %></td>
+          <td class="stats__table-row"><%= row.twenty_plus_yards %></td>
+          <td class="stats__table-row"><%= row.forty_plus_yards %></td>
+          <td class="stats__table-row"><%= row.fumbles %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%# <div class="py-5 px-10 flex flex-row-reverse border-t border-gray-500"> %>
+  <%#   <%= pagination_links @data %1> %>
+  <%# </div> %>
+</section>
