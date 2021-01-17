@@ -1,20 +1,43 @@
-# App
+# Info
 
-To start your Phoenix server:
+NFL Rushing statistics, using PETAL stack:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+- Phoenix
+- Elixir
+- TailwindCSS
+- AlpineJS
+- LiveView
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+DB: Postgres
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Installation and running
 
-## Learn more
+Clone:
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+```
+$ git clone git@github.com:devato/petal-stack-example.git
+```
+
+Setup (OSX)
+
+```
+$ bin/setup
+```
+
+Import `rushing.json` data:
+
+```
+$ mix app.rushing.import "rushing.json"
+```
+
+Start:
+
+```
+$ bin/start
+```
+
+Test:
+
+```
+$ bin/test
+```
