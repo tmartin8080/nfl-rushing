@@ -13,9 +13,13 @@
     <div class="">
       <form action="<%= Routes.exports_path(@socket, :create) %>" method="post">
       <%= form_tag Routes.exports_path(@socket, :create), action: :post %>
-        <input type="hidden" name="term" value="<%= @params["term"] %>" />
-        <input type="hidden" name="sort[field]" value="<%= @params["sort"]["field"] %>" />
-        <input type="hidden" name="sort[direction]" value="<%= @params["sort"]["direction"] %>" />
+        <%= if @params["term"] do %>
+          <input type="hidden" name="term" value="<%= @params["term"] %>" />
+        <% end %>
+        <%= if @params["sort"] do %>
+          <input type="hidden" name="sort[field]" value="<%= @params["sort"]["field"] %>" />
+          <input type="hidden" name="sort[direction]" value="<%= @params["sort"]["direction"] %>" />
+        <% end %>
         <button type="submit" class="rounded bg-gray-100 px-4 py-2">Export to CSV</button>
       </form>
     </div>
@@ -81,7 +85,7 @@
       <% end %>
     </tbody>
   </table>
-  <%# <div class="py-5 px-10 flex flex-row-reverse border-t border-gray-500"> %>
-  <%#   <%= pagination_links @data %1> %>
-  <%# </div> %>
+  <div class="py-5 px-10 flex flex-row-reverse border-t border-gray-500">
+    <%= pagination_links @data %>
+  </div>
 </section>

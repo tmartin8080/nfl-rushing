@@ -50,7 +50,9 @@ defmodule App.MixProject do
       {:credo, ">= 0.0.0"},
       {:nimble_csv, "~> 1.0"},
       {:jaxon, "~> 2.0"},
-      {:ex_machina, "~> 2.5.0", only: :test}
+      {:ex_machina, "~> 2.5.0", only: :test},
+      {:scrivener_ecto, "~> 2.0"},
+      {:scrivener_html, ">= 0.0.0"}
     ]
   end
 

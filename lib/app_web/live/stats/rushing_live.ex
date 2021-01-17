@@ -24,7 +24,7 @@ defmodule AppWeb.Stats.RushingLive do
      socket
      |> assign(:params, params)
      |> assign(:target_direction, target_direction(params))
-     |> assign(:data, RushingSearch.search(params))}
+     |> assign(:data, RushingSearch.search(params, paginate: true))}
   end
 
   @impl true

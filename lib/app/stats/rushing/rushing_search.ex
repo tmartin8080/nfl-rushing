@@ -6,10 +6,10 @@ defmodule App.Stats.Rushing.RushingSearch do
   alias App.Stats.Rushing
   import Ecto.Query
 
-  def search(criteria \\ %{}) do
+  def search(criteria \\ %{}, opts \\ []) do
     base_query()
     |> build_query(criteria)
-    |> Repo.all()
+    |> maybe_paginate(criteria, opts)
   end
 
   def stream(criteria) do
@@ -50,4 +50,11 @@ defmodule App.Stats.Rushing.RushingSearch do
   end
 
   defp compose_query(_, query), do: query
+
+  defp maybe_paginate(query, params, paginate: true) do
+    page = Map.get(params, "page", 1)
+    Repo.paginate(query, page: page, page_size: 15)
+  end
+
+  defp maybe_paginate(query, _, _), do: Repo.all(query)
 end
