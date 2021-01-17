@@ -27,7 +27,7 @@ $ bin/setup
 Import `rushing.json` data:
 
 ```
-$ mix app.rushing.import "rushing.json"
+$ mix app.import.rushing "rushing.json"
 ```
 
 Start:
