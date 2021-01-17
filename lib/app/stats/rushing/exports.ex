@@ -3,11 +3,10 @@ defmodule App.Stats.Rushing.Exports do
   Generates CSV export files using search filter results.
   """
 
-  alias NimbleCSV.RFC4180, as: CSV
   alias App.Repo
-  alias App.Stats.Rushing
   alias App.Stats.Rushing.ConfigMap
   alias App.Stats.Rushing.RushingSearch
+  alias NimbleCSV.RFC4180, as: CSV
 
   @default_root_dir "priv/exports"
   @default_filename "rushing-report"
@@ -36,7 +35,7 @@ defmodule App.Stats.Rushing.Exports do
 
   defp write_to_csv_file(rows_stream) do
     filename = build_filename()
-    local_path = Application.app_dir(:rushing, "#{@default_root_dir}/#{filename}")
+    local_path = Application.app_dir(:app, "#{@default_root_dir}/#{filename}")
     file_modes = @default_file_modes
     output = File.stream!(local_path, file_modes)
 
