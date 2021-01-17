@@ -52,7 +52,9 @@ defmodule App.MixProject do
       {:jaxon, "~> 2.0"},
       {:ex_machina, "~> 2.5.0", only: :test},
       {:scrivener_ecto, "~> 2.0"},
-      {:scrivener_html, ">= 0.0.0"}
+      # NOTE currently being updated for Phoenix 1.5+
+      # https://github.com/mgwidmann/scrivener_html/pull/97
+      {:scrivener_html, github: "jaimeiniesta/scrivener_html", branch: "relax_phoenix_dep"}
     ]
   end
 

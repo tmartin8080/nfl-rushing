@@ -26,43 +26,7 @@
   </div>
 
   <table class="stats__table">
-    <thead>
-      <tr>
-        <%= for {column, heading} <- @headings do %>
-          <%= if Enum.member?(@sortable, heading) do %>
-            <th class="stats__table-heading">
-              <div class="flex center-items">
-                <%= live_patch to: Routes.rushing_path(
-                    @socket,
-                    :index,
-                    [
-                      page: @params["page"],
-                      term: @params["term"],
-                      sort: [field: column,
-                      direction: @target_direction]
-                    ]
-                  ), class: "text-blue-500" do %>
-                  <span><%= heading %></span>
-                <% end %>
-                <%= if @params["sort"]["field"] == heading do %>
-                  <%= if @params["sort"]["direction"] == "desc" do %>
-                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                    </svg>
-                  <% else %>
-                    <svg class="relative right-0 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                    </svg>
-                  <% end %>
-                <% end %>
-              </div>
-            </th>
-          <% else %>
-            <th class="stats__table-heading"><%= heading %></th>
-          <% end %>
-        <% end %>
-      </tr>
-    </thead>
+    <%= live_component @socket, AppWeb.Stats.Rushing.TableHeadComponent, params: @params %>
     <tbody>
       <%= for row <- @data do %>
         <tr>
