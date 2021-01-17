@@ -1,0 +1,24 @@
+@layer components {
+  .page__title {
+    @apply text-3xl font-bold mb-10;
+  }
+  .stats__table {
+    @apply border-collapse table-auto w-full bg-white;
+  }
+  .stats__table-heading {
+    @apply text-left p-4 sticky top-0 border-b border-gray-200 bg-gray-100;
+  }
+  .stats__table-row {
+    @apply p-4 border-t border-gray-200;
+  }
+  .pagination {
+    @apply flex space-x-2;
+    li.active {
+      @apply font-bold bg-gray-200;
+    }
+    li {
+      @apply px-3 py-2 rounded bg-gray-100;
+    }
+  }
+}
+

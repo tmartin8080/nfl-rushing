@@ -40,6 +40,8 @@ defmodule App.MixProject do
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_view, "~> 0.15.3"},
+      {:floki, ">= 0.27.0", only: :test},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
@@ -48,7 +50,9 @@ defmodule App.MixProject do
       {:credo, ">= 0.0.0"},
       {:nimble_csv, "~> 1.0"},
       {:jaxon, "~> 2.0"},
-      {:ex_machina, "~> 2.5.0", only: :test}
+      {:ex_machina, "~> 2.5.0", only: :test},
+      {:scrivener_ecto, "~> 2.0"},
+      {:scrivener_html, ">= 0.0.0"}
     ]
   end
 
