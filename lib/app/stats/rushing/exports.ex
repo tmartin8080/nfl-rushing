@@ -27,7 +27,7 @@ defmodule App.Stats.Rushing.Exports do
   end
 
   defp convert_to_row(stream_row) do
-    ConfigMap.list()
+    ConfigMap.list_keys()
     |> Enum.into([], fn column ->
       Map.get(stream_row, column)
     end)
