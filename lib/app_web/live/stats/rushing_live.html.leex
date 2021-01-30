@@ -5,7 +5,7 @@
 <section class="stats">
   <h5 class="text-lg text-bold">Filter by Player</h5>
 
-  <div class="flex justify-between	">
+  <div class="flex justify-between ">
     <form class="mb-5" phx-change="search">
       <input phx-debounce="300" name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
       <%= live_patch "Clear Filters", to: Routes.rushing_path(@socket, :index), class: "text-blue-500" %>
@@ -20,7 +20,7 @@
           <input type="hidden" name="sort[field]" value="<%= @params["sort"]["field"] %>" />
           <input type="hidden" name="sort[direction]" value="<%= @params["sort"]["direction"] %>" />
         <% end %>
-        <button type="submit" class="rounded bg-gray-100 px-4 py-2">Export to CSV</button>
+        <button type="submit" class="px-4 py-2 bg-gray-100 rounded">Export to CSV</button>
       </form>
     </div>
   </div>
@@ -49,7 +49,7 @@
       <% end %>
     </tbody>
   </table>
-  <div class="py-5 px-10 flex flex-row-reverse border-t border-gray-500">
+  <div class="flex flex-row-reverse px-10 py-5 border-t border-gray-500">
     <%= pagination_links @data %>
   </div>
 </section>

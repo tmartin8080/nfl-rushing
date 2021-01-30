@@ -12,6 +12,10 @@ defmodule App.Stats.Rushing.RushingSearch do
     |> maybe_paginate(criteria, opts)
   end
 
+  @doc """
+  Stream data from repo.  No pagination
+  """
+  @spec stream(map()) :: Stream.t()
   def stream(criteria) do
     base_query()
     |> build_query(criteria)

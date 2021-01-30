@@ -18,7 +18,7 @@ defmodule App.Stats.Rushing.Exports do
   @spec generate_csv(map()) :: {:ok, String.t()} | {:error, String.t()}
   def generate_csv(params) do
     RushingSearch.stream(params)
-    |> Stream.map(&convert_to_row(&1))
+    |> Stream.map(&convert_to_row/1)
     |> write_to_csv_file()
     |> case do
       {:ok, path} -> {:ok, path}
