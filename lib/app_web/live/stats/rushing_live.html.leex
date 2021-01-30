@@ -10,8 +10,7 @@
       <input phx-debounce="300" name="term" type="search" class="rounded" value="<%= @params["term"] %>"/>
       <%= live_patch "Clear Filters", to: Routes.rushing_path(@socket, :index), class: "text-blue-500" %>
     </form>
-    <div class="">
-      <form action="<%= Routes.exports_path(@socket, :create) %>" method="post">
+    <div>
       <%= form_tag Routes.exports_path(@socket, :create), action: :post %>
         <%= if @params["term"] do %>
           <input type="hidden" name="term" value="<%= @params["term"] %>" />
