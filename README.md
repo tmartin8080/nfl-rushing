@@ -15,7 +15,7 @@ DB: Postgres
 Clone:
 
 ```
-$ git clone git@github.com:devato/petal-stack-example.git
+$ git clone git@github.com:tmartin8080/nfl-rushing.git
 ```
 
 Setup (OSX)
