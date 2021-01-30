@@ -11,7 +11,9 @@
       <%= live_patch "Clear Filters", to: Routes.rushing_path(@socket, :index), class: "text-blue-500" %>
     </form>
     <div>
-      <%= form_tag Routes.exports_path(@socket, :create), action: :post %>
+      <%= form_tag Routes.exports_path(@socket, :create),
+        id: "export-form",
+        method: :post %>
         <%= if @params["term"] do %>
           <input type="hidden" name="term" value="<%= @params["term"] %>" />
         <% end %>
@@ -19,7 +21,7 @@
           <input type="hidden" name="sort[field]" value="<%= @params["sort"]["field"] %>" />
           <input type="hidden" name="sort[direction]" value="<%= @params["sort"]["direction"] %>" />
         <% end %>
-        <button type="submit" class="px-4 py-2 bg-gray-100 rounded">Export to CSV</button>
+        <button type="submit" class="px-4 py-2 bg-gray-100 rounded disabled:opacity-50">Export to CSV</button>
       </form>
     </div>
   </div>
