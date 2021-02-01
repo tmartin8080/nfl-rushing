@@ -54,7 +54,8 @@ defmodule App.MixProject do
       {:scrivener_ecto, "~> 2.0"},
       # NOTE currently being updated for Phoenix 1.5+
       # https://github.com/mgwidmann/scrivener_html/pull/97
-      {:scrivener_html, github: "tmartin8080/scrivener_html", branch: "application_boundries"}
+      {:scrivener_html, github: "tmartin8080/scrivener_html", branch: "application_boundries"},
+      {:benchee, "~> 1.0", only: :dev}
     ]
   end
 
