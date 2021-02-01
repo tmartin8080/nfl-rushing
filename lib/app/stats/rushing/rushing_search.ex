@@ -1,11 +1,22 @@
 defmodule App.Stats.Rushing.RushingSearch do
   @moduledoc """
-  Search for data using filters.
+  Search interface for applying filters for search, pagination, and exports.
   """
   alias App.Repo
   alias App.Stats.Rushing
   import Ecto.Query
 
+  @doc """
+  Compose search query based on params as criteria.
+
+  Criteria:
+  - `term`: search term entered, filters only player name.
+  - `sort`: map with field/direction
+  - `page`: for pagination
+
+  Options:
+  - `paginate`: boolean, disables pagination.
+  """
   def search(criteria \\ %{}, opts \\ []) do
     base_query()
     |> build_query(criteria)
